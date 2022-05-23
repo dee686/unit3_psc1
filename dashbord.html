@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container>div{
+            width: 200px;
+            height: 400px;
+        }
+        #container>div>img{
+            width: 100%;
+        }
+      h3{
+          display: block;
+      }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+</body>
+</html>
+<script>
+ var student=JSON.parse(localStorage.getItem("studentails"))
+ let trash=JSON.parse(localStorage.getItem("trshdata"))||[];
+
+ display(student)
+
+ function display(data)
+ { 
+     document.querySelector("#container").innerHTML="";
+     data.forEach(function(element,index){
+        let box=document.createElement("div")
+
+        let stuname=document.createElement("h2")
+        stuname=element.name;
+
+        let stucourse=document.createElement("h2")
+        stucourse=element.course;
+
+        let stubatch=document.createElement("h2")
+        stubatch=`Fw_${element.batch}`;
+
+        let stuunit=document.createElement("h2")
+        stuunit=`Unit :${element.unit}`;
+
+        let stuimage=document.createElement("img")
+        stuimage.src=element.image;
+
+        let removebtn=document.createElement("button")
+        removebtn.innerText="Remove";
+        removebtn.addEventListener("click",function(){
+            remove(index)
+        })
+        box.append(stuimage,stuname,stucourse,stuunit,stubatch,removebtn)
+        document.getElementById("container").append(box)
+         
+     });
+ }
+  function remove(index){
+     let newdata=student.filter(function(el,i){
+         if(i==index)
+         {
+             trash.push(el)
+             localStorage.setItem("trashdata",JSON.stringify(trash))
+         }
+         else{
+            return i!==index
+         }
+         
+     })
+     localStorage.setItem("studentails",JSON.stringify(newdata))
+     display(newdata)
+ }
+</script>

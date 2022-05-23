@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <style>
+        #nav{
+            width: 100%;
+            height: 40px;
+            display: grid;
+            grid-template-columns: repeat(6,1fr);
+            border: 1px solid black;
+        }
+        #nav+button{
+            margin-top: 50px;
+        }
+        h2{
+            display: inline;
+        }
+        form{
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body>
+   <div id="nav"></div>
+   <button><a href="dashbord.html">Dashbord</a> </button>
+    <form >
+        <input id="sname" type="text" placeholder="name">
+        <input id="scourse" type="text" placeholder="course">
+        <input id="sunit" type="text" placeholder="unit">
+        <input id="simage" type="text" placeholder="url">
+        <input id="sbatch" type="text" placeholder="batch">
+        <input type="submit">
+    </form>
+</body>
+</html>
+<script>
+   var studentarr=JSON.parse(localStorage.getItem("studentails")) ||[];
+ 
+   
+    document.querySelector("form").addEventListener("submit",formsubmit)
+
+    function formsubmit(){
+        event.preventDefault()
+        stuobj={
+            name:document.getElementById("sname").value,
+            course:document.getElementById("scourse").value,
+            unit:document.getElementById("sunit").value,
+            image:document.getElementById("simage").value,
+            batch:`ft-web-${document.getElementById("sbatch").value}`,
+        }
+        studentarr.push(stuobj)
+        console.log(studentarr);
+        localStorage.setItem("studentails",JSON.stringify(studentarr))
+        document.getElementById("sname").value="";
+        document.getElementById("scourse").value="";
+        document.getElementById("sunit").value="";
+        document.getElementById("simage").value="";
+        document.getElementById("sbatch").value="";
+       
+    }
+calculate()
+    function calculate(){
+
+        let obj={}
+
+        for(i=0;i<studentarr.length;i++)
+        {
+            if(!obj[studentarr[i].batch])
+            {
+              obj[studentarr[i].batch]=0;
+            }
+        }
+
+        for(i=0;i<studentarr.length;i++)
+        {
+            
+              obj[studentarr[i].batch]++;
+            
+        }
+        console.log(obj)
+        for(let key in obj)
+        {   let box=document.createElement("div")
+            let studentbatch=document.createElement("h2")
+            studentbatch.innerText=`${key} :`;
+
+            let num=document.createElement("h2")
+            num.innerText=obj[key];
+            box.append(studentbatch,num)
+            document.getElementById("nav").append(box)
+        }
+    }
+</script>
